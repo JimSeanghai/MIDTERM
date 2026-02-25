@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Staff Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        function getCookie(name) {
+        const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+            let c = cookies[i].trim();
+            if (c.startsWith(name + "=")) {
+            return c.substring(name.length + 1);
+            }
+        }
+        return null;
+        }
+
+        // BLOCK ACCESS
+        if (!getCookie("practitioner_id")) {
+        window.location.href = "Error_Page.html";
+        }
+    </script>
+
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-xl shadow-md w-96">
+    <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+
+    <form id="registerForm" class="space-y-4">
+      <input type="text" id="fullName" placeholder="Full Name"
+        class="w-full border p-2 rounded" required>
+
+      <input type="email" id="email" placeholder="Email"
+        class="w-full border p-2 rounded" required>
+
+      <input type="text" id="phone" placeholder="Phone"
+        class="w-full border p-2 rounded" required>
+
+      <button type="submit"
+        class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
+        Staff_Register
+      </button>
+
+
+      <button type="button" onclick="logout()"
+        class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600">
+        Logout
+      </button>
+    </form>
+  </div>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const fullName = document.getElementById("fullName").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+
+  let newUser = { fullName, email, phone };
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push(newUser);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+  window.location.href = "Admin_Page.html";
+});
+
+function logout() {
+  document.cookie = "username=; path=/; max-age=0";
+  window.location.replace("Login_Page.html");
+}
+</script>
+
+</body>
+</html>

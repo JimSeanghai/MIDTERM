@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Staff Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function getCookie(name) {
+        const cookies = document.cookie.split(";");
+
+        for (let i = 0; i < cookies.length; i++) {
+            let c = cookies[i].trim();
+            if (c.startsWith(name + "=")) {
+            return c.substring(name.length + 1);
+            }
+        }
+        return null;
+        }
+
+        // BLOCK ACCESS
+        if (!getCookie("practitioner_id")) {
+        window.location.href = "Error_Page.html";
+        }
+    </script>
+
+
+</head>
+
+<body class="bg-gray-100 p-10">
+
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Hospital Staff List</h2>
+
+    <table class="w-full border border-gray-200">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="p-2 border">Full Name</th>
+          <th class="p-2 border">Email</th>
+          <th class="p-2 border">Phone</th>
+          <th class="p-2 border">Action</th>
+        </tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+  </div>
+
+<script>
+function getCookie(name) {
+  const value = document.cookie.split("; ").find(row => row.startsWith(name + "="));
+  return value ? value.split("=")[1] : null;
+}
+
+if (!getCookie("practitioner_id")) {
+  window.location.href = "Error_Page.html";
+}
+
+function loadUsers() {
+  const table = document.getElementById("userTable");
+  table.innerHTML = "";
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  users.forEach((user, index) => {
+    table.innerHTML += `
+      <tr class="text-center">
+        <td class="border p-2">${user.fullName}</td>
+        <td class="border p-2">${user.email}</td>
+        <td class="border p-2">${user.phone}</td>
+        <td class="border p-2">
+          <button onclick="deleteUser(${index})"
+            class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+            Remove
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function deleteUser(index) {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.splice(index, 1);
+  localStorage.setItem("users", JSON.stringify(users));
+  loadUsers();
+}
+
+loadUsers();
+</script>
+
+</body>
+</html>
